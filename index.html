@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healthcare Provider Survey - Women's Preventive Services</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --surface-0: #f5f5f5;
+      --surface-1: #fafafa;
+      --surface-2: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --text-muted: #999999;
+      --border: #e0e0e0;
+      --border-strong: #d0d0d0;
+      --fill-accent: #185fa5;
+      --on-accent: #ffffff;
+      --radius: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --surface-0: #1a1a1a;
+        --surface-1: #242424;
+        --surface-2: #2d2d2d;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-muted: #808080;
+        --border: #3a3a3a;
+        --border-strong: #4a4a4a;
+        --fill-accent: #378add;
+        --on-accent: #ffffff;
+      }
+    }
+
+    body {
+      background-color: var(--surface-0);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .header {
+      background-color: var(--surface-2);
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    #surveyForm {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .question-box {
+      background-color: var(--surface-2);
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+      padding: 1.5rem;
+    }
+
+    .question-box label {
+      display: block;
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .question-box textarea {
+      width: 100%;
+      height: 100px;
+      padding: 0.75rem;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-primary);
+      background-color: var(--surface-1);
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .question-box textarea:focus {
+      outline: none;
+      border-color: var(--fill-accent);
+      box-shadow: 0 0 0 2px rgba(24, 95, 165, 0.1);
+    }
+
+    .question-box textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .submit-btn {
+      background-color: var(--fill-accent);
+      color: var(--on-accent);
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.75rem 1.5rem;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .qr-section {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .qr-section p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .qr-container {
+      display: inline-block;
+      padding: 1rem;
+      background-color: var(--surface-2);
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+    }
+
+    .status-message {
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: var(--radius);
+      text-align: center;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status-message.success {
+      background-color: #d4edda;
+      color: #155724;
+      display: block;
+    }
+
+    .status-message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      display: block;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(24, 95, 165, 0.3);
+      border-top-color: var(--fill-accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Healthcare Provider Survey</h1>
+      <p>Women's preventive services assessment</p>
+    </div>
+
+    <form id="surveyForm">
+      <div class="question-box">
+        <label for="q1">1. How would you rate your patients' access to recommended women's preventive services, and what barriers most commonly prevent timely care?</label>
+        <textarea id="q1" name="q1" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q2">2. How consistently are women in your patient population receiving age-appropriate cancer screenings, and what preventive services do you see most underutilized?</label>
+        <textarea id="q2" name="q2" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q3">3. How often do prior authorization requirements delay women's preventive services in your practice?</label>
+        <textarea id="q3" name="q3" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q4">4. Are your patients aware of the no-cost preventive services covered under ACA-compliant plans?</label>
+        <textarea id="q4" name="q4" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q5">5. Which chronic conditions most interfere with women completing recommended preventive screenings?</label>
+        <textarea id="q5" name="q5" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q6">6. How would you assess access to prenatal, maternal, and postpartum preventive care in your area?</label>
+        <textarea id="q6" name="q6" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q7">7. How much administrative burden is associated with women's preventive services in your practice?</label>
+        <textarea id="q7" name="q7" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q8">8. Do cost-sharing caps improve adherence among your female patients?</label>
+        <textarea id="q8" name="q8" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q9">9. What is the biggest unmet preventive care need for women in Nebraska?</label>
+        <textarea id="q9" name="q9" required></textarea>
+      </div>
+
+      <div class="question-box">
+        <label for="q10">10. What policy or coverage changes would most improve women's preventive health outcomes?</label>
+        <textarea id="q10" name="q10" required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Survey</button>
+      <div class="status-message" id="statusMessage"></div>
+    </form>
+
+    <div class="qr-section">
+      <p>Scan to share this survey</p>
+      <div class="qr-container">
+        <canvas id="qrcode"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode.js/1.5.3/qrcode.min.js"></script>
+  <script>
+    const FORMSPREE_ID = 'xljeevgl'; // Replace with your Formspree ID
+
+    const form = document.getElementById('surveyForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMessage = document.getElementById('statusMessage');
+
+    // Generate QR code pointing to current page
+    new QRCode(document.getElementById('qrcode'), {
+      text: window.location.href,
+      width: 200,
+      height: 200,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!FORMSPREE_ID || FORMSPREE_ID === 'YOUR_FORMSPREE_ID_HERE') {
+        showStatus('Error: Formspree ID not configured. See instructions.', 'error');
+        return;
+      }
+
+      const formData = new FormData(form);
+      const data = {
+        _subject: 'Healthcare Provider Survey Response',
+        _captcha: false,
+        q1: formData.get('q1'),
+        q2: formData.get('q2'),
+        q3: formData.get('q3'),
+        q4: formData.get('q4'),
+        q5: formData.get('q5'),
+        q6: formData.get('q6'),
+        q7: formData.get('q7'),
+        q8: formData.get('q8'),
+        q9: formData.get('q9'),
+        q10: formData.get('q10'),
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+      try {
+        const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          showStatus('Thank you! Your response has been submitted to Maggie Reinert.', 'success');
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Submit Survey';
+        } else {
+          showStatus('Submission failed. Please try again or contact Maggie Reinert.', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Submit Survey';
+        }
+      } catch (error) {
+        showStatus('Network error. Please ensure all fields are completed and try again.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Survey';
+        console.error('Error:', error);
+      }
+    });
+
+    function showStatus(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-message ${type}`;
+      setTimeout(() => {
+        if (type === 'success') {
+          statusMessage.className = 'status-message';
+        }
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
